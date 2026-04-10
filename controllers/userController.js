@@ -36,9 +36,9 @@ export function loginUser(req,res){
     User.find({email : email}).then(
         (users)=>{
             if(users[0]==null){
-                res.json({
-                    message : "user ot found"
-                })
+                res.status(404).json({
+                    message : "user not found"
+                });
             }else{
                 const user = users[0]
             
@@ -53,15 +53,16 @@ export function loginUser(req,res){
                     image: user.image
                 };
 
-                const token = jwt.sign(payLoad,"Giva20030329")
+                const token = jwt.sign(payLoad,process.env.JWT_SECRET)
 
                 if(isPasswordCorrect){
                     res.json({
                         message : "Login Successfull",
-                        token : token
-                    })
+                        token : token,
+                        role:user.role,
+                    });
                 }else{
-                    res.json({
+                    res.status(401).json({
                         message : "Invalid Password"
                     })
                 }
