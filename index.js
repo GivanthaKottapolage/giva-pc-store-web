@@ -31,7 +31,7 @@ app.use(
 
         const token = AuthorizationHeader.replace("Bearer ","")
 
-        console.log(token)
+        //console.log(token)
 
         jwt.verify(token,process.env.JWT_SECRET,
             (error,content)=>{
@@ -39,7 +39,7 @@ app.use(
                 if(content == null){
                     console.log("invalid token")
 
-                    res.json({
+                    res.status(401).json({
                         message : "Invalid token"
                     })
                     
