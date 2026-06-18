@@ -1,11 +1,11 @@
 import Product from "../models/Product.js"
 import { isAdmin } from "./userController.js"
 
-export function createProduct (req,res){
-    
-    if ( ! isAdmin(req)){
+export function createProduct(req, res) {
+
+    if (!isAdmin(req)) {
         res.status(403).json({
-            message : "forbidden"
+            message: "forbidden"
         })
         return;
     }
@@ -13,124 +13,124 @@ export function createProduct (req,res){
     const product = new Product(req.body)
 
     product.save().then(
-        ()=>{
+        () => {
             res.json({
-                message : "Product Created Successfully"
+                message: "Product Created Successfully"
             })
         }
     ).catch(
-        (error)=>{
+        (error) => {
             res.status(500).json({
-                message : "Error Creating Product",
-                error : error.message
+                message: "Error Creating Product",
+                error: error.message
             })
         }
     )
 
 }
 
-export function getAllProducts(req,res){
+export function getAllProducts(req, res) {
 
-    if(isAdmin(req)){
+    if (isAdmin(req)) {
 
         Product.find().then(
-            (products)=>{
+            (products) => {
                 res.json(products)
             }
         ).catch(
-            (error)=>{
+            (error) => {
                 res.status(500).json({
-                    message : "Error fetching products",
-                    error : error.message,
+                    message: "Error fetching products",
+                    error: error.message,
                 })
             }
         )
     }
-    else{
+    else {
 
-        Product.find({isAvailable : true}).then(
-            (products)=>{
+        Product.find({ isAvailable: true }).then(
+            (products) => {
                 res.json(products);
             }
         ).catch(
-            (error)=>{
+            (error) => {
                 res.status(500).json({
-                    message : "Error fetching products",
-                    error : error.message,
+                    message: "Error fetching products",
+                    error: error.message,
                 })
             }
         )
     }
 }
 
-export function deleteProduct(req,res){
-    if(!isAdmin(req)){
+export function deleteProduct(req, res) {
+    if (!isAdmin(req)) {
         res.status(403).json({
-            message : "Only admin can delete Products"
+            message: "Only admin can delete Products"
         })
         return
     }
 
     const productID = req.params.productID
 
-    Product.deleteOne({productID : productID}).then(
-        ()=>{
+    Product.deleteOne({ productID: productID }).then(
+        () => {
             res.json({
-                message : "Product deleted successfully"
+                message: "Product deleted successfully"
             })
         }
     )
 }
 
-export function updateProduct(req,res){
-    if(!isAdmin(req)){
+export function updateProduct(req, res) {
+    if (!isAdmin(req)) {
         res.status(403).json({
-            message : "Only admin can update Products"
+            message: "Only admin can update Products"
         })
         return
     }
 
     const productID = req.params.productID
 
-    Product.updateOne({productID : productID},req.body).then(
-        ()=>{
+    Product.updateOne({ productID: productID }, req.body).then(
+        () => {
             res.json({
-                message : "Product updated successfully"
+                message: "Product updated successfully"
             })
         }
     )
 }
 
-export function getProductById(req,res){
+export function getProductById(req, res) {
 
-    const productID = req.param.productID
+    const productID = req.params.productID
 
-    Product.findOne({productID : productID}).then(
-        (product)=>{
-            if(product == null){
+    Product.findOne({ productID: productID }).then(
+        (product) => {
+            if (product == null) {
                 res.status(404).json({
-                    message : "Product not found"
+                    message: "Product not found"
                 })
             }
-            else{
-                if(product.isAvailable){
+            else {
+                if (product.isAvailable) {
                     res.json(product)
-                }else{
-                    if(isAdmin(req)){
+                } else {
+                    if (isAdmin(req)) {
                         res.json(product)
-                    }else{
+                    } else {
                         res.status(404).json({
-                            message : "Product not found"
+                            message: "Product not found"
                         })
                     }
                 }
             }
         }
     ).catch(
-        (error)=>{
+        (error) => {
             res.status(500).json({
-                message : "Error fetching product",
-                error : error.message 
+                message: "Error fetching product",
+                error: error.message
             })
         }
     )
