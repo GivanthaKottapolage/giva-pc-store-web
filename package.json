@@ -12,12 +12,15 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "axios": "^1.18.1",
     "bcrypt": "^6.0.0",
     "cors": "^2.8.6",
     "dotenv": "^17.4.1",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
-    "mongoose": "8.10",
-    "nodemon": "^3.1.14"
+    "mongoose": "^8.24.1",
+    "nodemailer": "^9.0.1",
+    "nodemon": "^3.1.14",
+    "react-modal": "^3.16.3"
   }
 }
